@@ -15,8 +15,11 @@ return new class extends Migration
     public function up(): void
     {
         $rol = Role::create(['name'=>'boss']);
+        $rol2 = Role::create(['name'=>'teacher']);
         $usuario = User::find(1);
+        $usuario2 = User::where('id','!=','1')->get();
         $usuario->assignRole('boss');
+        $usuario2->assignRole('teacher');
     }
 
     /**
