@@ -9,7 +9,7 @@
                     <td class="p-4 w-1/4">Motivo</td>
                 </tr>
             </thead>
-            <tbody class="bg-gray-100" >
+            <tbody class="bg-gray-400" >
             @foreach($ausencias as $x)
                 <tr class="flex w-full mb-4 bg-grey">
                     <td class="p-4 w-1/4">{{ $x->profesor }}</td>
