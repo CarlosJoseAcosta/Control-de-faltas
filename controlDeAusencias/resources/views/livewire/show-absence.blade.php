@@ -4,16 +4,27 @@
             <label for=""> Elija el departamento que desea buscar: </label>
             <select name="" id="" class="mx-2" wire:model="busquedaDep">
                 <option value="">Elija una opcion</option>
-                @foreach($ausencias as $x)
-                <option value="{{ $x->departamento }}">{{ $x->departamento }}</option>
+                @foreach($todosDep as $x)
+                <option value="{{ $x->name }}">{{ $x->name }}</option>
                 @endforeach
             </select>
             <label for="" class="mx-2"> o elije la hora que quiere filtrar:</label>
             <select name="" id="" wire:model="busquedaHora">
                 <option value="">Elija una opcion</option>
-                @foreach($ausencias as $x)
-                <option value="{{ $x->hora }}">{{ $x->hora }}</option>
-                @endforeach
+                <option value="1º mañana">1º mañana</option>
+                <option value="2º mañana">2º mañana</option>
+                <option value="3º mañana">3º mañana</option>
+                <option value="recreo mañana">recreo mañana</option>
+                <option value="4º mañana">4º mañana</option>
+                <option value="5º mañana">5º mañana</option>
+                <option value="6º mañana">6º mañana</option>
+                <option value="1º tarde">1º tarde</option>
+                <option value="2º tarde">2º tarde</option>
+                <option value="3º tarde">3º tarde</option>
+                <option value="recreo tarde">recreo tarde</option>
+                <option value="4º tarde">4º tarde</option>
+                <option value="5º tarde">5º tarde</option>
+                <option value="6º tarde">6º tarde</option>
             </select>
             <button wire:click="filter"class="bg-black text-white mx-3">Enviar</button>
     </div>
