@@ -1,17 +1,22 @@
 <div>
     <div class = "mx-24 flex justify-items-center">
-        <label for=""> Elija el departamento que desea buscar: </label>
-        <select name="" id="">
-            @foreach($ausencias as $x)
-            <option value="{{ $x->departamento }}">{{ $x->departamento }}</option>
-            @endforeach
-        </select>
-        <label for=""> o elije la hora que quiere filtrar:</label>
-        <select name="" id="">
-            @foreach($ausencias as $x)
-            <option value="{{ $x->hora }}">{{ $x->hora }}</option>
-            @endforeach
-        </select>
+        <div class="grid grid-cols-5 grid-rows-1 place-content-center my-4">
+            <label for=""> Elija el departamento que desea buscar: </label>
+            <select name="" id="" class="mx-2" wire:model="busquedaDep">
+                <option value="">Elija una opcion</option>
+                @foreach($ausencias as $x)
+                <option value="{{ $x->departamento }}">{{ $x->departamento }}</option>
+                @endforeach
+            </select>
+            <label for="" class="mx-2"> o elije la hora que quiere filtrar:</label>
+            <select name="" id="" wire:model="busquedaHora">
+                <option value="">Elija una opcion</option>
+                @foreach($ausencias as $x)
+                <option value="{{ $x->hora }}">{{ $x->hora }}</option>
+                @endforeach
+            </select>
+            <button wire:click="filter"class="bg-black text-white mx-3">Enviar</button>
+    </div>
     </div>
     <div class="mx-24 flex justify-items-center">
         <table class="text-left table-auto min-w-full">

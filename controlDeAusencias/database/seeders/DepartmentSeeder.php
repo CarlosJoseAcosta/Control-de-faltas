@@ -19,5 +19,6 @@ class DepartmentSeeder extends Seeder
         $department1 = new Department();
         $department1-> name = "informatica";
         $department1-> save(); 
+        
     }
 }

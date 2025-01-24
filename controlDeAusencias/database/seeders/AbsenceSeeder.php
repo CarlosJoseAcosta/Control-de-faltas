@@ -20,6 +20,12 @@ class AbsenceSeeder extends Seeder
         $absence -> comment = "falto a segunda hora por motivos personales";
         $absence -> user_id = 2;
         $absence -> save();
+        $absence1 = new Absence();
+        $absence1 -> date = '2025-03-06';
+        $absence1 -> time = '1º Mañana';
+        $absence1 -> comment = "falto a primera hora por motivos personales";
+        $absence1 -> user_id = 2;
+        $absence1 -> save();
         
     }
 }
