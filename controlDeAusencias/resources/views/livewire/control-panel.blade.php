@@ -1,11 +1,7 @@
 <div>
     <div class = "mx-24 flex justify-items-center">
         <label for=""> Elija el departamento que desea buscar: </label>
-        <select name="" id="" class="mx-2" wire:model="busquedaFech">
-            <option value="">Elija una opcion</option>
-            @foreach($ausencias as $x)
-            <option value={{ $x->fecha }}>{{ $x->fecha }}</option>
-            @endforeach
+        <input type="date" name="" id="" wire:model = "busquedaFech">
         </select>
         <label for="" class="mx-2"> o elije la hora que quiere filtrar:</label>
         <select name="" id="" wire:model="busquedaHora">
@@ -26,6 +22,7 @@
             <option value="6º tarde">6º tarde</option>
         </select>
         <button wire:click="filter"class="px-4 bg-gray-500 text-white mx-3">Enviar</button>
+        <button wire:click="clean" class="px-4 bg-gray-500 text-white mx-3">Limpiar filtro</button>
     </div>
     <div class="mx-24 flex justify-items-center">
         <button class="px-4 bg-gray-500 text-white mx-3" wire:click ="modalUsuario">Crear usuarios</button>
@@ -36,6 +33,7 @@
                 <tr class = "flex w-full mb-4">
                     <td class="p-4 w-1/4">Profesor</td>
                     <td class="p-4 w-1/4">Departamento</td>
+                    <td class="p-4 w-1/4">Fecha</td>
                     <td class="p-4 w-1/4">Hora</td>
                     <td class="p-4 w-1/4">Motivo</td>
                 </tr>
@@ -45,6 +43,7 @@
                 <tr class="flex w-full mb-4 bg-grey">
                     <td class="p-4 w-1/4">{{ $x->profesor }}</td>
                     <td class="p-4 w-1/4">{{ $x->departamento }}</td>
+                    <td class="p-4 w-1/4">{{ $x->fecha }}</td>
                     <td class="p-4 w-1/4">{{ $x->hora }}</td>
                     <td class="p-4 w-1/4">{{ $x->comentario }}</td>
                 </tr>

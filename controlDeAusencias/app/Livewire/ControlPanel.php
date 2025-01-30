@@ -62,13 +62,20 @@ class ControlPanel extends Component
 
     public function filter(){
 
-        // dd($this->busquedaFech);
+        //  dd($this->busquedaFech);
         if(($this->busquedaFech == "") && ($this->busquedaHora != "")){
             $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.time", "=", $this->busquedaHora)->get();
         }elseif(($this->busquedaFech != "") && ($this->busquedaHora == "")){
             $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date", "=", $this->busquedaFech)->get();
+        }elseif($this->busquedaFech != "" && $this->busquedaHora != ""){
+            $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date", "=", $this->busquedaFech)->where("absences.time", "=", $this->busquedaHora)->get();
+
         }else{
             $this->mount();
         }
+    }
+
+    public function clean(){
+        $this->mount();
     }
 }
