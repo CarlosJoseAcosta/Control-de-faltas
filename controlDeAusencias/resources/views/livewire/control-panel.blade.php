@@ -2,7 +2,6 @@
     <div class = "mx-24 flex justify-items-center">
         <label for=""> Elija el departamento que desea buscar: </label>
         <input type="date" name="" id="" wire:model = "busquedaFech">
-        </select>
         <label for="" class="mx-2"> o elije la hora que quiere filtrar:</label>
         <select name="" id="" wire:model="busquedaHora">
             <option value="">Elija una opcion</option>

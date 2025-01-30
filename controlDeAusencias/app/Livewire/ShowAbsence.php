@@ -14,7 +14,7 @@ class ShowAbsence extends Component
     public $departamento;
     public $ausencias;
     public $busquedaHora;
-    public $busquedaDep;
+    public $busquedaFech;
     public $todosDep;
     public function render()
     {
@@ -42,19 +42,45 @@ class ShowAbsence extends Component
             "5º tarde" => "19:05",
             "6º tarde" => "20:00",
         );
+        $arrayMartes = array(
+            "1º mañana" => "8:55",
+            "2º mañana" => "9:50",
+            "3º mañana" => "10:45",
+            "recreo mañana" => "11:15",
+            "4º mañana" => "12:10",
+            "5º mañana" => "13:05",
+            "6º mañana" => "14:00",
+            "1º tarde" => "15:45",
+            "2º tarde" => "16:30",
+            "3º tarde" => "17:15",
+            "recreo tarde" => "17:45",
+            "4º tarde" => "18:30",
+            "5º tarde" => "19:15",
+            "6º tarde" => "20:00",
+
+        );
         /*falta añadir el array exclusivo para el martes*/
         /*select que muestra todas las faltas de la fecha actual*/
         // $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.created_at','like',$fechaAct)->get();
         /*select que muestra todas las faltas*/
         $horaActual = date("H:i");
+        $dia = date('w');
          //dd($horaActual);
-        foreach($arayHoras as $x => $valor){
-            if($horaActual <= $valor){
-                $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->get();
-                // echo"a";
-                echo "<br>".$valor;
+         if($dia == 2){
+            foreach($arrayMartes as $x => $valor){
+                if($horaActual <= $valor){
+                    $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->get();
+                    // echo"a";
+                }
             }
-        }
+         }else{
+             foreach($arayHoras as $x => $valor){
+                 if($horaActual <= $valor){
+                     $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->get();
+                     // echo"a";
+                 }
+             }
+         }
         // dd($this->ausencias);
         $this->todosDep = Department::select('name')->where('id','!=','1')->get();
     }
@@ -62,10 +88,14 @@ class ShowAbsence extends Component
     public function filter(){
 
         // dd($this->busquedaHora);
-        if(($this->busquedaDep == "") && ($this->busquedaHora != "")){
+        if(($this->busquedaFech == "") && ($this->busquedaHora != "")){
             $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.time", "LIKE", $this->busquedaHora)->get();
-        }elseif(($this->busquedaDep != "") && ($this->busquedaHora == "")){
-            $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date", "LIKE", $this->busquedaDep)->get();
+        }elseif(($this->busquedaFech != "") && ($this->busquedaHora == "")){
+            $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date", "LIKE", $this->busquedaFech)->get();
         }
+    }
+
+    public function limpiar(){
+        $this->mount();
     }
 }
