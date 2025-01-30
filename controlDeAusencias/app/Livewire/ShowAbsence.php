@@ -65,18 +65,19 @@ class ShowAbsence extends Component
         /*select que muestra todas las faltas*/
         $horaActual = date("H:i");
         $dia = date('w');
+        $fechaActual = date("Y-m-d");
          //dd($horaActual);
          if($dia == 2){
             foreach($arrayMartes as $x => $valor){
                 if($horaActual <= $valor){
-                    $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->get();
+                    $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->where("absences.date","=", $fechaActual)->get();
                     // echo"a";
                 }
             }
          }else{
              foreach($arayHoras as $x => $valor){
                  if($horaActual <= $valor){
-                     $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->get();
+                     $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->where("absences.date","=", $fechaActual)->get();
                      // echo"a";
                  }
              }

@@ -10,6 +10,7 @@ use Livewire\Component;
 class ControlPanel extends Component
 {
 
+    public $idDepartamento;
     public $ausencias;
     public $departamentos;
     public $hora;
@@ -19,8 +20,8 @@ class ControlPanel extends Component
     public $nameUser;
     public $email;
     public $password;
-    public $department_id;
     public $modal = false;
+    public $modal1 = false;
     public $busquedaFech;
     public $busquedaHora;
 
@@ -30,7 +31,8 @@ class ControlPanel extends Component
     }
 
     public function mount(){
-        $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->get();
+        $fecha = date("Y-m-d");
+        $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date","=", $fecha)->get();
         $this->departamentos = Department::where('id','!=','1')->get();
     }
 
@@ -38,12 +40,16 @@ class ControlPanel extends Component
         $this->nameUser="";
         $this->email="";
         $this->password="";
-        $this->department_id="";
+        $this->idDepartamento="";
     }
 
     public function modalUsuario(){
         $this->limpiezaUsuario();
         $this->modal = true;
+    }
+
+    public function modalAusencias(){
+        $this->modal1 = true;
     }
 
     public function adiosModalUsuario(){
@@ -52,12 +58,18 @@ class ControlPanel extends Component
     }
 
     public function nuevoUsuario(){
-        $user = new User();
-        $user->name = $this->nameUser;
-        $user -> email = $this->email;
-        $user -> password = "password";
-        $user -> department_id = $this->department_id;
-        $user -> save();
+        if(($this->idDepartamento == "") || ($this->idDepartamento == null)){
+
+        }else{
+            $user = new User();
+            $user-> name = $this->nameUser;
+            $user -> email = $this->email;
+            $user -> password = "password";
+            $user -> department_id = $this->idDepartamento;
+            $user -> save();
+            $this-> limpiezaUsuario();
+            $this-> adiosModalUsuario();
+        }
     }
 
     public function filter(){

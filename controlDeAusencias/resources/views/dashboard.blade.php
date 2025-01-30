@@ -5,7 +5,6 @@
         </h2>
     </x-slot>
     @role('boss')
-    <p>Esto es una prueba para el rol de jefe de estudios</p>
     @livewire("control-panel")
     @endrole
     @role('teacher')
