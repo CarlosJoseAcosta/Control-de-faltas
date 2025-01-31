@@ -87,13 +87,38 @@
             <div class="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white">
               <div class="w-full">
                 <div class="m-8 my-20 max-w-[400px] mx-auto">
-                  <div class="mb-8">
-                    <h1 class="mb-4 text-3xl font-extrabold">Turn on notifications</h1>
-                    <p class="text-gray-600">Get the most out of Twitter by staying up to date with what's happening.</p>
+                  <div class="mb-8" style="text-align: center;">
+                    <h1 class="mb-4 text-3xl font-extrabold">Crear faltas</h1>
+                    <label for="">Elija la fecha en la que va a faltar: </label>
+                    <input type="date" name="" id=""><br>
+                    <label for="">En que hora va a faltar</label><br>
+                    <input type="checkbox" value = "1º mañana" name="" id="">1º hora mañana 
+                    <input type="checkbox" value = "2º mañana" name="" id="">2º hora mañana <br>
+                    <input type="checkbox" value = "3º mañana" name="" id="">3º hora mañana 
+                    <input type="checkbox" value = "recreo mañana" name="" id="">recreo mañana <br>
+                    <input type="checkbox" value = "4º mañana" name="" id="">4º hora mañana 
+                    <input type="checkbox" value = "5º mañana" name="" id="">5º hora mañana <br>
+                    <input type="checkbox" value = "6º mañana" name="" id="">6º hora mañana 
+                    <input type="checkbox" value = "1º tarde" name="" id="">1º hora tarde<br>
+                    <input type="checkbox" value = "2º tarde" name="" id="">2º hora tarde
+                    <input type="checkbox" value = "3º tarde" name="" id="">3º hora tarde<br>
+                    <input type="checkbox" value = "recreo tarde" name="" id="">recreo tarde
+                    <input type="checkbox" value = "4º tarde" name="" id="">4º hora tarde<br>
+                    <input type="checkbox" value = "5º tarde" name="" id="">5º hora tarde
+                    <input type="checkbox" value = "6º tarde" name="" id="">6º hora tarde<br>
+                    <label for="">Introduzca la razon de la falta: </label><br>
+                    <textarea name="" id="" cols="30" rows="10"></textarea><br>
+                    <label for="">Seleccione el profesro de la falta</label>
+                    <select name="" id="">
+                      <option selected value="">Elija una opcion</option>
+                      @foreach($todosUser as $x)
+                      <option value={{$x->id}}>{{$x->name}}</option>
+                      @endforeach
+                    </select>
                   </div>
                   <div class="space-y-4">
                     <button class="p-3 bg-black rounded-full text-white w-full font-semibold">Allow notifications</button>
-                    <button class="p-3 bg-white border rounded-full w-full font-semibold">Skip for now</button>
+                    <button class="p-3 bg-white border rounded-full w-full font-semibold" wire:click = "adiosModalAusencias">Cerrar ventana</button>
                   </div>
                 </div>
               </div>

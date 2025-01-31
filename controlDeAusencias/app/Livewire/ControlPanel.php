@@ -24,6 +24,7 @@ class ControlPanel extends Component
     public $modal1 = false;
     public $busquedaFech;
     public $busquedaHora;
+    public $todosUser;
 
     public function render()
     {
@@ -34,6 +35,7 @@ class ControlPanel extends Component
         $fecha = date("Y-m-d");
         $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date","=", $fecha)->get();
         $this->departamentos = Department::where('id','!=','1')->get();
+        $this->todosUser = User::all();
     }
 
     public function limpiezaUsuario(){
@@ -57,6 +59,11 @@ class ControlPanel extends Component
         $this->modal = false;
     }
 
+    public function adiosModalAusencias(){
+        $this->mount();
+        $this->modal1 = false;
+    }
+
     public function nuevoUsuario(){
         if(($this->idDepartamento == "") || ($this->idDepartamento == null)){
 
@@ -70,6 +77,18 @@ class ControlPanel extends Component
             $this-> limpiezaUsuario();
             $this-> adiosModalUsuario();
         }
+    }
+
+    public function nuevaAusencia(){
+        //Completar y verificar si funciona
+        $ausencia = new Absence();
+        $ausencia -> date = date("Y-m-d");
+        $ausencia -> time = $this->hora;
+        $ausencia -> comment = $this->comentario;
+        $ausencia -> user_id = $this->profesor;
+        $ausencia -> save();
+        $this->mount();
+        $this->adiosModalAusencias();
     }
 
     public function filter(){
