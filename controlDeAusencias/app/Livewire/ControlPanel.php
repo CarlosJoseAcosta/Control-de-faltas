@@ -25,6 +25,10 @@ class ControlPanel extends Component
     public $busquedaFech;
     public $busquedaHora;
     public $todosUser;
+    public $insertTime=[];
+    public $insertDate;
+    public $insertComment;
+    public $idUserAbs;
 
     public function render()
     {
@@ -43,6 +47,13 @@ class ControlPanel extends Component
         $this->email="";
         $this->password="";
         $this->idDepartamento="";
+    }
+
+    public function limpiezaAusencia(){
+        $this->insertDate = "";
+        $this->insertTime = [];
+        $this->insertComment = "";
+        $this->idUserAbs = "";
     }
 
     public function modalUsuario(){
@@ -80,15 +91,17 @@ class ControlPanel extends Component
     }
 
     public function nuevaAusencia(){
-        //Completar y verificar si funciona
         $ausencia = new Absence();
-        $ausencia -> date = date("Y-m-d");
-        $ausencia -> time = $this->hora;
-        $ausencia -> comment = $this->comentario;
-        $ausencia -> user_id = $this->profesor;
+        $ausencia -> date = $this->insertDate;
+        foreach($this->insertTime as $x => $y){
+            $ausencia -> time = $y;
+        }
+        $ausencia -> comment = $this->insertComment;
+        $ausencia -> user_id = $this->idUserAbs;
         $ausencia -> save();
         $this->mount();
         $this->adiosModalAusencias();
+        $this->limpiezaAusencia();
     }
 
     public function filter(){
