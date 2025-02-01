@@ -81,10 +81,11 @@ class ShowAbsence extends Component
          //dd($horaActual);
         $this->todosUser = User::all();
         if($dia == 2){
+            $i = 0;
             foreach($arrayMartes as $x => $valor){
-                if($horaActual <= $valor){
+                if((strtotime($horaActual) < strtotime($valor)) && ($i == 0)){
                     $this->ausencias = Absence::select('absences.id as idAusencia','users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->where("absences.date","=", $fechaActual)->get();
-                    // echo"a";
+                    $i++;
                 }
             }
         }else{
