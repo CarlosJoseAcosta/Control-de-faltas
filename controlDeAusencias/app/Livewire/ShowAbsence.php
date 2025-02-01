@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Absence;
 use App\Models\Department;
+use App\Models\User;
 use Livewire\Component;
 
 class ShowAbsence extends Component
@@ -16,6 +17,13 @@ class ShowAbsence extends Component
     public $busquedaHora;
     public $busquedaFech;
     public $todosDep;
+    public $modal;
+    public $todosUser;
+    public $insertTime=[];
+    public $insertDate;
+    public $insertComment;
+    public $idUserAbs;
+
     public function render()
     {
         return view('livewire.show-absence');
@@ -67,23 +75,61 @@ class ShowAbsence extends Component
         $dia = date('w');
         $fechaActual = date("Y-m-d");
          //dd($horaActual);
+         $this->todosUser = User::all();
          if($dia == 2){
             foreach($arrayMartes as $x => $valor){
                 if($horaActual <= $valor){
-                    $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->where("absences.date","=", $fechaActual)->get();
+                    $this->ausencias = Absence::select('absences.id as idAusencia','users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->where("absences.date","=", $fechaActual)->get();
                     // echo"a";
                 }
             }
          }else{
-             foreach($arayHoras as $x => $valor){
-                 if($horaActual <= $valor){
-                     $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->where("absences.date","=", $fechaActual)->get();
-                     // echo"a";
-                 }
+            $i = 0;
+            foreach($arayHoras as $x => $valor){
+                if(($horaActual <= $valor) && ($i == 0)){
+                    $this->ausencias = Absence::select('absences.id as idAusencia','users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', 'LIKE', $x)->where("absences.date","=", $fechaActual)->get();
+                    $i++;
+                }
              }
          }
         // dd($this->ausencias);
         $this->todosDep = Department::select('name')->where('id','!=','1')->get();
+    }
+
+    public function modalAusencias(){
+        $this->modal = true;
+    }
+
+    public function adiosModalAusencias(){
+        $this->mount();
+        $this->modal = false;
+    }
+
+    public function limpiezaAusencia(){
+        $this->insertDate = "";
+        $this->insertTime = [];
+        $this->insertComment = "";
+        $this->idUserAbs = "";
+    }
+
+    public function nuevaAusencia(){
+        // dd($this->insertTime);
+        foreach($this->insertTime as $x => $y){
+        $ausencia = new Absence();
+        $ausencia -> date = $this->insertDate;
+            $ausencia -> time = $y;
+            $ausencia -> comment = $this->insertComment;
+            $ausencia -> user_id = auth()->user()->id;
+            $ausencia -> save();
+            $this->mount();
+            $this->adiosModalAusencias();
+        }
+        $this->limpiezaAusencia();
+    }
+
+    public function eliminarAusencia(Absence $absences){
+        $absences->delete();
+        $this->mount();
     }
 
     public function filter(){

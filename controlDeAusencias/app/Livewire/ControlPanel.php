@@ -106,6 +106,7 @@ class ControlPanel extends Component
 
     public function eliminarAusencia(Absence $absences){
         $absences->delete();
+        $this->mount();
     }
 
     public function filter(){

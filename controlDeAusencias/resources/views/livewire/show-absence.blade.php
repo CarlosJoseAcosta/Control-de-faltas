@@ -24,7 +24,8 @@
             </select>
             <button wire:click="filter"class="px-4 bg-gray-500 bg-black text-white mx-3">Enviar</button>
             <button wire:click="limpiar"class="px-4 bg-gray-500 bg-black text-white mx-3">Limpiar</button>
-    </div>
+            <button class = "px-4 bg-green-500 text-white mx-3" wire:click = "modalAusencias">Crear faltas</button>
+        </div>
     </div>
     <div class="mx-24 flex justify-items-center">
         <table class="text-left table-auto min-w-full">
@@ -34,6 +35,7 @@
                     <td class="p-4 w-1/4">Departamento</td>
                     <td class="p-4 w-1/4">Hora</td>
                     <td class="p-4 w-1/4">Motivo</td>
+                    <td class="p-4 w-1/4">Acciones</td>
                 </tr>
             </thead>
             <tbody class="bg-gray-400" >
@@ -43,10 +45,50 @@
                     <td class="p-4 w-1/4">{{ $x->departamento }}</td>
                     <td class="p-4 w-1/4">{{ $x->hora }}</td>
                     <td class="p-4 w-1/4">{{ $x->comentario }}</td>
+                    <td class="p-4 w-1/4"><td class="p-4 w-1/4"><button wire:click = "eliminarAusencia({{$x->idAusencia}})">Eliminar</button></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+
+        @if($modal)
+        <div class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10">
+            <div class="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white">
+              <div class="w-full">
+                <div class="m-8 my-20 max-w-[400px] mx-auto">
+                  <div class="mb-8" style="text-align: center;">
+                    <h1 class="mb-4 text-3xl font-extrabold">Crear faltas</h1>
+                    <label for="">Elija la fecha en la que va a faltar: </label>
+                    <input type="date" name="" id="" wire:model = "insertDate"><br>
+                    <label for="">En que hora va a faltar</label><br>
+                    <input type="checkbox" wire:model = "insertTime" value = "1º mañana" name="" id="1"><label for="1">1º hora mañana</label> 
+                    <input type="checkbox" wire:model = "insertTime" value = "2º mañana" name="" id="2"><label for="2">2º hora mañana</label> <br>
+                    <input type="checkbox" wire:model = "insertTime" value = "3º mañana" name="" id="3"><label for="3">3º hora mañana</label> 
+                    <input type="checkbox" wire:model = "insertTime" value = "recreo mañana" name="" id="4"><label for="4">recreo mañana <br></label>
+                    <input type="checkbox" wire:model = "insertTime" value = "4º mañana" name="" id="5"><label for="5">4º hora mañana</label> 
+                    <input type="checkbox" wire:model = "insertTime" value = "5º mañana" name="" id="6"><label for="6">5º hora mañana</label> <br>
+                    <input type="checkbox" wire:model = "insertTime" value = "6º mañana" name="" id="7"><label for="7">6º hora mañana</label> 
+                    <input type="checkbox" wire:model = "insertTime" value = "1º tarde" name="" id="8"><label for="8">1º hora tarde</label><br>
+                    <input type="checkbox" wire:model = "insertTime" value = "2º tarde" name="" id="9"><label for="9">2º hora tarde</label>
+                    <input type="checkbox" wire:model = "insertTime" value = "3º tarde" name="" id="10"><label for="10">3º hora tarde</label><br>
+                    <input type="checkbox" wire:model = "insertTime" value = "recreo tarde" name="" id="11"><label for="11">recreo tarde </label>
+                    <input type="checkbox" wire:model = "insertTime" value = "4º tarde" name="" id="12"><label for="12">4º hora tarde</label><br>
+                    <input type="checkbox" wire:model = "insertTime" value = "5º tarde" name="" id="13"><label for="13">5º hora tarde</label>
+                    <input type="checkbox" wire:model = "insertTime" value = "6º tarde" name="" id="14"><label for="14">6º hora tarde</label><br>
+                    <label for="">Introduzca la razon de la falta: </label><br>
+                    <textarea name="" id="" cols="30" rows="10" wire:model = "insertComment"></textarea><br>
+                    <label for="">Seleccione el profesro de la falta</label>
+                    </select>
+                  </div>
+                  <div class="space-y-4">
+                    <button class="p-3 bg-black rounded-full text-white w-full font-semibold" wire:click = "nuevaAusencia">Allow notifications</button>
+                    <button class="p-3 bg-white border rounded-full w-full font-semibold" wire:click = "adiosModalAusencias">Cerrar ventana</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        @endif
 
     </div>
 </div>
