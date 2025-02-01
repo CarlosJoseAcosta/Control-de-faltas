@@ -37,7 +37,7 @@ class ControlPanel extends Component
 
     public function mount(){
         $fecha = date("Y-m-d");
-        $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date","=", $fecha)->get();
+        $this->ausencias = Absence::select('absences.id as idAusencia','users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date","=", $fecha)->get();
         $this->departamentos = Department::where('id','!=','1')->get();
         $this->todosUser = User::all();
     }
@@ -91,17 +91,21 @@ class ControlPanel extends Component
     }
 
     public function nuevaAusencia(){
+        foreach($this->insertTime as $x => $y){
         $ausencia = new Absence();
         $ausencia -> date = $this->insertDate;
-        foreach($this->insertTime as $x => $y){
             $ausencia -> time = $y;
+            $ausencia -> comment = $this->insertComment;
+            $ausencia -> user_id = $this->idUserAbs;
+            $ausencia -> save();
+            $this->mount();
+            $this->adiosModalAusencias();
         }
-        $ausencia -> comment = $this->insertComment;
-        $ausencia -> user_id = $this->idUserAbs;
-        $ausencia -> save();
-        $this->mount();
-        $this->adiosModalAusencias();
         $this->limpiezaAusencia();
+    }
+
+    public function eliminarAusencia(Absence $absences){
+        $absences->delete();
     }
 
     public function filter(){

@@ -49,7 +49,7 @@
                     <td class="p-4 w-1/4">{{ $x->hora }}</td>
                     <td class="p-4 w-1/4">{{ $x->comentario }}</td>
                     <td class="p-4 w-1/4"><button>Actualizar</button></td>
-                    <td class="p-4 w-1/4"><button>Eliminar</button></td>
+                    <td class="p-4 w-1/4"><button wire:click = "eliminarAusencia({{$x->idAusencia}})">Eliminar</button></td>
                 </tr>
             @endforeach
             </tbody>
