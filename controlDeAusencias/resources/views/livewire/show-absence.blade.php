@@ -30,22 +30,28 @@
     <div class="mx-24 flex justify-items-center">
         <table class="text-left table-auto min-w-full">
             <thead class="bg-black text-white py-4">
-                <tr class = "flex w-full mb-4">
-                    <td class="p-4 w-1/4">Profesor</td>
-                    <td class="p-4 w-1/4">Departamento</td>
-                    <td class="p-4 w-1/4">Hora</td>
-                    <td class="p-4 w-1/4">Motivo</td>
-                    <td class="p-4 w-1/4">Acciones</td>
-                </tr>
+              <tr class = "flex w-full mb-4">
+                <td class="p-4 w-1/4">Profesor</td>
+                <td class="p-4 w-1/4">Departamento</td>
+                <td class="p-4 w-1/4">Fecha</td>
+                <td class="p-4 w-1/4">Hora</td>
+                <td class="p-4 w-1/4">Motivo</td>
+                <td class="p-4 w-1/4"></td>
+                <td class="p-4 w-1/4"></td>
+            </tr>
             </thead>
             <tbody class="bg-gray-400" >
             @foreach($ausencias as $x)
                 <tr class="flex w-full mb-4 bg-grey">
+                  <tr class="flex w-full mb-4 bg-grey">
                     <td class="p-4 w-1/4">{{ $x->profesor }}</td>
                     <td class="p-4 w-1/4">{{ $x->departamento }}</td>
+                    <td class="p-4 w-1/4">{{ $x->fecha }}</td>
                     <td class="p-4 w-1/4">{{ $x->hora }}</td>
                     <td class="p-4 w-1/4">{{ $x->comentario }}</td>
-                    <td class="p-4 w-1/4"><td class="p-4 w-1/4"><button wire:click = "eliminarAusencia({{$x->idAusencia}})">Eliminar</button></td>
+                    <td class="p-4 w-1/4"><button wire:click = "modalAct({{$x->idAusencia}})">Actualizar</button></td>
+                    <td class="p-4 w-1/4"><button wire:click = "eliminarAusencia({{$x->idAusencia}})">Eliminar</button></td>
+                </tr>
                 </tr>
             @endforeach
             </tbody>
@@ -88,6 +94,27 @@
               </div>
             </div>
           </div>
+        @endif
+        
+        
+        @if($modal1)
+<div class="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10">
+  <div class="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white">
+    <div class="w-full">
+      <div class="m-8 my-20 max-w-[400px] mx-auto">
+        <div class="mb-8">
+          <h1 class="mb-4 text-3xl font-extrabold">Turn on notifications</h1>
+          <label for="">Introduzca la nueva razon: </label><br>
+          <textarea name="" id="" cols="30" rows="10" wire:model = "editarComment"></textarea>
+        </div>
+        <div class="space-y-4">
+          <button class="p-3 bg-black rounded-full text-white w-full font-semibold" wire:click = "actualizarAusencias">Actualizar</button>
+          <button class="p-3 bg-white border rounded-full w-full font-semibold" wire:click = "adiosModalAct">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
         @endif
 
     </div>

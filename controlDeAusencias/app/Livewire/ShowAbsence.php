@@ -17,12 +17,16 @@ class ShowAbsence extends Component
     public $busquedaHora;
     public $busquedaFech;
     public $todosDep;
-    public $modal;
+    public $modal = false;
+    public $modal1 = false;
     public $todosUser;
     public $insertTime=[];
     public $insertDate;
     public $insertComment;
     public $idUserAbs;
+    public $mostrarBoton = true;
+    public $editarComment;
+    public $idAuxiliar;
 
     public function render()
     {
@@ -75,29 +79,42 @@ class ShowAbsence extends Component
         $dia = date('w');
         $fechaActual = date("Y-m-d");
          //dd($horaActual);
-         $this->todosUser = User::all();
-         if($dia == 2){
+        $this->todosUser = User::all();
+        if($dia == 2){
             foreach($arrayMartes as $x => $valor){
                 if($horaActual <= $valor){
                     $this->ausencias = Absence::select('absences.id as idAusencia','users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->where("absences.date","=", $fechaActual)->get();
                     // echo"a";
                 }
             }
-         }else{
+        }else{
             $i = 0;
+            $this->ausencias = Absence::select('absences.id as idAusencia','users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date","=", $fechaActual)->get();
             foreach($arayHoras as $x => $valor){
-                if(($horaActual <= $valor) && ($i == 0)){
-                    $this->ausencias = Absence::select('absences.id as idAusencia','users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', 'LIKE', $x)->where("absences.date","=", $fechaActual)->get();
+                if((strtotime($horaActual) < strtotime($valor)) && ($i == 0)){
+                    // $this->ausencias = Absence::select('absences.id as idAusencia','users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario', 'absences.date as fecha')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where('absences.time', '=', $x)->where("absences.date","=", $fechaActual)->get();
                     $i++;
                 }
-             }
-         }
+            }
+        }
         // dd($this->ausencias);
         $this->todosDep = Department::select('name')->where('id','!=','1')->get();
     }
 
     public function modalAusencias(){
         $this->modal = true;
+        
+    }
+
+    public function modalAct(Absence $id){
+        $this->modal1 = true;
+        $this->idAuxiliar = $id;
+        // dd($this->idAuxiliar);
+    }
+
+    public function adiosModalAct(){
+        $this->mount();
+        $this->modal1 = false;
     }
 
     public function adiosModalAusencias(){
@@ -127,8 +144,17 @@ class ShowAbsence extends Component
         $this->limpiezaAusencia();
     }
 
-    public function eliminarAusencia(Absence $absences){
+    public function eliminarAusencia($absences){
         $absences->delete();
+        $this->mount();
+    }
+
+    public function actualizarAusencias(){
+        // dd($this->idAuxiliar);
+        $ausenciaAct = Absence::find($this->idAuxiliar->id);
+        $ausenciaAct->comment = $this->editarComment;
+        $ausenciaAct->save();
+        $this->adiosModalAct();
         $this->mount();
     }
 
@@ -136,9 +162,9 @@ class ShowAbsence extends Component
 
         // dd($this->busquedaHora);
         if(($this->busquedaFech == "") && ($this->busquedaHora != "")){
-            $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.time", "LIKE", $this->busquedaHora)->get();
+            $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.time", "=", $this->busquedaHora)->get();
         }elseif(($this->busquedaFech != "") && ($this->busquedaHora == "")){
-            $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date", "LIKE", $this->busquedaFech)->get();
+            $this->ausencias = Absence::select('users.name as profesor','absences.time as hora','departments.name as departamento','absences.comment as comentario')->join('users','users.id','=','absences.user_id')->join('departments','departments.id','=','users.department_id')->where("absences.date", "=", $this->busquedaFech)->get();
         }
     }
 

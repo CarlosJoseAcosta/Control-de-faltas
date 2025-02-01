@@ -29,6 +29,9 @@ class ControlPanel extends Component
     public $insertDate;
     public $insertComment;
     public $idUserAbs;
+    public $modal2 = false;
+    public $idAuxiliar;
+    public $editarComment;
 
     public function render()
     {
@@ -65,6 +68,12 @@ class ControlPanel extends Component
         $this->modal1 = true;
     }
 
+    public function modalAct(Absence $id){
+        $this->modal2 = true;
+        $this->idAuxiliar = $id;
+        // dd($this->idAuxiliar);
+    }
+
     public function adiosModalUsuario(){
         $this->mount();
         $this->modal = false;
@@ -73,6 +82,11 @@ class ControlPanel extends Component
     public function adiosModalAusencias(){
         $this->mount();
         $this->modal1 = false;
+    }
+
+    public function adiosModalAct(){
+        $this->mount();
+        $this->modal2 = false;
     }
 
     public function nuevoUsuario(){
@@ -106,6 +120,15 @@ class ControlPanel extends Component
 
     public function eliminarAusencia(Absence $absences){
         $absences->delete();
+        $this->mount();
+    }
+
+    public function actualizarAusencias(){
+        // dd($this->idAuxiliar);
+        $ausenciaAct = Absence::find($this->idAuxiliar->id);
+        $ausenciaAct->comment = $this->editarComment;
+        $ausenciaAct->save();
+        $this->adiosModalAct();
         $this->mount();
     }
 
